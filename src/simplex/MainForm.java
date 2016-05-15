@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.image.ImageObserver;
+import java.text.DecimalFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,6 +23,12 @@ import javax.swing.border.Border;
  * @author jonatns
  */
 public class MainForm extends javax.swing.JFrame {
+    
+    static int recCounter = 0, variableCounter = 0;
+    static double[][] theMatrix;
+    static String[] VARIABLES = {"x", "y", "z","w", "s", "r"};
+
+
 
     /**
      * Creates new form MainForm
@@ -39,6 +46,7 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLayeredPane1 = new javax.swing.JLayeredPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -47,10 +55,22 @@ public class MainForm extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+
+        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
+        jLayeredPane1.setLayout(jLayeredPane1Layout);
+        jLayeredPane1Layout.setHorizontalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jLayeredPane1Layout.setVerticalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("rows");
+        jLabel1.setText("Rows");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -58,7 +78,7 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("columns");
+        jLabel2.setText("Columns");
 
         jTextField2.setAutoscrolls(false);
 
@@ -69,9 +89,16 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Costo");
+        jLabel3.setText("Cost");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sí", "No", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No", "Yes" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/simplex/logo.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -79,27 +106,27 @@ public class MainForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 234, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(5, 5, 5)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField1)
+                            .addComponent(jTextField2))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 174, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
@@ -113,7 +140,8 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -137,63 +165,248 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int row = Integer.parseInt(jTextField1.getText());
-        int col = Integer.parseInt(jTextField2.getText());
-        
-        JFrame frame = new JFrame("Simplex");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(350, 350);
-        
-        GridLayout grid = new GridLayout(row + 1, col, 1, 1);
-        
-        frame.setLayout(grid);
-        
-        solveBtn = new JButton();
-        solveBtn.setText("Solve");
-        solveBtn.setSize(40, 10);
-        solveBtn.setBackground(Color.blue);
-        solveBtn.setOpaque(true); 
+
+        if(!jTextField1.getText().equals("") && !jTextField2.getText().equals("")) {
+            
+            int row = Integer.parseInt(jTextField1.getText());
+            int col = Integer.parseInt(jTextField2.getText());
+                
+            JFrame frame = new JFrame("Simplex Solver");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(350, 350);
+
+            GridLayout grid = new GridLayout(row + 1, col, 1, 1);
+
+            frame.setLayout(grid);
+
+            solveBtn = new JButton();
+            solveBtn.setText("Solve");
+            solveBtn.setSize(40, 10);
+            solveBtn.setBackground(Color.blue);
+            solveBtn.setOpaque(true); 
         
                 
-        final JTextField[][] textField = new JTextField[row][col];
-        
-        for(int i=0; i < row; i++) {
-            for(int j=0; j < col; j++) {
-                textField[i][j] = new JTextField();
-                frame.add(textField[i][j]);
+            final JTextField[][] textField = new JTextField[row][col];
+
+            for(int i=0; i < row; i++) {
+                for(int j=0; j < col; j++) {
+                    textField[i][j] = new JTextField();
+                    frame.add(textField[i][j]);
+                }
             }
+            frame.add(solveBtn);
+
+            solveBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    solveBtnActionPerformed(evt, textField);
+                }
+            });
+
+            Simplex.closeFrame();
+            frame.setLocationRelativeTo(null);
+
+            frame.setVisible(true);
         }
-        frame.add(solveBtn);
-        
-        solveBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                solveBtnActionPerformed(evt, textField);
-            }
-        });
+        else {
+            JOptionPane.showMessageDialog(null, "Please enter the amount of rows and columns");
 
-        Simplex.closeFrame();
-        frame.setVisible(true);
-
+        }
+            
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void solveBtnActionPerformed(java.awt.event.ActionEvent evt,  JTextField[][] textField) {
         
-        if(isCompleted(textField)) {
-            for(int i=0;i < textField.length ; i++){
-                for(int j=0;j < textField[i].length ; j++){
-                    System.out.print( textField[i][j].getText() + " | ");
+        String letter = "";
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        Boolean isCost = false;
+        if(jComboBox1.getSelectedItem().toString() == "Yes") {
+            isCost = true;
+            letter = "C";
+        }
+        else
+            letter = "C";
+            
+        
+                
+        if(isCompleted(textField) && !isCost) {
+            double[][] matrix = createMatrix(textField);
+            
+            double[][] simplexMatrix = originalToSimplexMatrix(matrix, matrix.length, matrix[0].length);
+            
+            double[][] solvedMatrix = SolveSimplex(simplexMatrix, simplexMatrix.length, simplexMatrix[0].length, 0);
+
+
+            for(int i=0;i < solvedMatrix.length ; i++){
+                for(int j=0;j < solvedMatrix[i].length ; j++){
+                    System.out.print( solvedMatrix[i][j] + " | ");
+                }
+                System.out.println();
+            } 
+            
+            int count = 0;
+            int cols = solvedMatrix[0].length;
+            String ans = letter + ": " + df.format(solvedMatrix[0][cols - 1]) + "\n";
+            while(count < solvedMatrix.length - 1) {
+                ans += VARIABLES[count] + ": " + df.format(solvedMatrix[count + 1][cols - 1]) + "\n";
+                count++;
+            }
+            
+            JOptionPane.showMessageDialog(null,ans);
+
+        }
+        else if(isCompleted(textField) && isCost) {
+            double[][] matrix = createMatrix(textField);
+            
+            double[][] transposedMatrix = matrixTranspose(matrix, matrix.length, matrix[0].length);
+            double[][] simplexMatrix = originalToSimplexMatrix(transposedMatrix, transposedMatrix.length, transposedMatrix[0].length);
+
+            
+            for(int i=0;i < simplexMatrix.length ; i++){
+                for(int j=0;j < simplexMatrix[i].length ; j++){
+                    System.out.print( simplexMatrix[i][j] + " | ");
                 }
                 System.out.println();
             }
         }
+        else {
+            JOptionPane.showMessageDialog(null, "Please fill all the text fields");
+        }
+            
 
     }
+    
+    	private static double[][] SolveSimplex(double[][] laMatrix, int ROWS, int COLUMNS, int negCol) {
+		if(recCounter == variableCounter)
+			return theMatrix;
+		recCounter++;
+
+		//finding the best row, it cannot be the objective function row
+		int bestRow = bestRowFinder(laMatrix, ROWS, negCol, COLUMNS);
+
+		//Simplifica la Matrix
+		theMatrix = matrixSimplifier(laMatrix, ROWS, negCol, COLUMNS, bestRow);
+
+		return SolveSimplex(theMatrix, ROWS, COLUMNS, negCol + 1);
+	} //solveSimplex Method
+        
+        	private static int bestRowFinder(double[][] laMatrix, int ROWS, int negCol, int COLUMNS ) {
+		//it cannot be the objective function row
+		int bestRow = 1; //store the row with the best division
+		double bestValue = laMatrix[bestRow][negCol];
+		double resultValue = laMatrix[bestRow][COLUMNS - 1];
+		double bestDivision = resultValue/bestValue; // store the result of the best division
+		for(int i = 1; i < ROWS; i++ ){
+			double currentValue = laMatrix[i][negCol];
+			double currentResult = laMatrix[i][COLUMNS - 1];
+			double currentDivision = currentResult/currentValue;
+
+			//Comparison swapping
+			if(currentDivision < bestDivision){
+				bestDivision = currentDivision;
+				bestRow = i;
+			} //if currentDivision >= bestDivision skip to next
+
+		} //end of for
+
+		//Return the final value
+		return bestRow;
+	} //bestRow Finder
+                
+            private static double[][] matrixSimplifier(double[][] laMatrix, int ROWS, int negCol, int COLUMNS, int bestRow) {
+		double[][] the_matrix = new double [ROWS][COLUMNS];
+
+		//convertir la columna selecionada en todos 1
+		for(int i = negCol; i < COLUMNS; i++)
+			the_matrix[bestRow][i] = (laMatrix[bestRow][i]) / (laMatrix[bestRow][negCol]);
+
+		//simplifica las columnas restante
+		for(int i = 0; i < ROWS; i++){
+			if(i != bestRow) {
+				for(int j = 0; j < COLUMNS; j++)
+					the_matrix[i][j] = (laMatrix[i][j]) + (-1 * (the_matrix[bestRow][j] * laMatrix[i][negCol]));
+			} //if
+		} //for
+
+		return the_matrix;
+	} //end of matrixSimplifier
+    
+    private static double[][] createMatrix(JTextField[][] textField) {
+        
+        int row = textField.length;
+        int col = textField[0].length;
+        
+        double[][] matrix = new double[row][col];
+
+        for(int i=0; i < row; i++) {
+            for(int j=0; j < col; j++) {
+                matrix[i][j] = Double.parseDouble(textField[i][j].getText());
+            }
+        }
+        return matrix;
+    }
+        
+    
+    private static double[][] matrixTranspose(double[][] matrix, int ROWS, int COLUMNS) {
+	double[][] leMatrix = new double [ROWS][COLUMNS]; //store matrix swapping
+	double[][] laMatrix = new double [COLUMNS][ROWS]; //store final result for transpose
+
+	for(int i = 0; i < COLUMNS; i++){
+            leMatrix[ROWS - 1][i] = matrix[0][i];
+	} //swapping first line to last line
+
+	//coping the rest of the matrix
+	for(int i = 1;i < (ROWS - 1); i++) {
+            for(int j = 0; j < COLUMNS; j++)
+		leMatrix[i][j] = matrix[i][j];
+	}
+
+	//swapping last line to first line
+        for(int i = 0; i < COLUMNS; i++)
+            leMatrix[0][i] = matrix[ROWS - 1][i];
+
+            //transposing the matrix
+            for(int i = 0; i < ROWS; i++) {
+		for(int j = 0;j < COLUMNS; j++)
+                    laMatrix[j][i] = leMatrix[i][j];
+            }
+
+	return laMatrix;
+    } //transpose
+    
+	public static double[][] originalToSimplexMatrix(double matrix[][], int ROWS, int COLUMNS) {
+
+		//calculating the new size
+		int x = (COLUMNS + COLUMNS) - 1 ;
+
+		double [][] laMatrix = new double[ROWS][x];
+
+		//moving result colum to last colum
+		for (int i = 0; i < ROWS; i++) {
+			laMatrix[i][x - 1] = matrix[i][COLUMNS - 1];
+			matrix[i][COLUMNS - 1] = 0;
+		}
+		// storing the original value into the new array
+		for(int i=0;i <ROWS ; i++) {
+			for(int j=0;j <COLUMNS ; j++)
+				laMatrix[i][j] = matrix[i][j];
+		}
+
+		//adding the one into the simplex variable
+		int j = COLUMNS - 1;
+		for(int i = 1; i < ROWS; i++){
+			laMatrix[i][j] = 1;
+			j++;
+			variableCounter++;
+		} //outer for
+
+		return laMatrix;
+	} //Original To Simplex
     
     public static boolean isCompleted(JTextField[][] textField) {
          for(int i=0;i < textField.length ; i++){
             for(int j=0;j < textField[i].length ; j++){
                 if(textField[i][j].getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Please fill all the text fields");
                     return false;
                 }
             }
@@ -206,6 +419,10 @@ public class MainForm extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,6 +465,8 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
